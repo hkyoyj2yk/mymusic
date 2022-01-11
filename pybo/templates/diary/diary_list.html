@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="block">
+                <h2>Big Headline for Portfolio Project</h2>
+                <div class="portfolio-meta">
+                   <span>Dec 11, 2020</span>|
+                   <span> Category: typography</span>|
+                   <span> website: <a href="http://www.themefisher.com">Themefisher</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-10"> <!--위치 변경 -->
+<a href="{{ url_for('diary.create') }}" class="btn btn-secondary">일기쓰기</a>
+</div>
+
+<div class="container my-3">
+    <table class="table">
+        <tbody>
+        {% if diary_list %}
+        {% for diary in diary_list %}
+        <tr>
+            <td>
+                <a href="{{ url_for('diary.detail', diary_id=diary.id) }}">{{ diary.subject }}</a>
+                <p>{{ diary.content }}</p>
+            </td>
+            <td>{{ diary.create_date|datetime }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="3">일기가 없습니다.</td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <h4 class="subtitle wow fadeInUp animated"data-wow-delay=".3s" data-wow-duration="500ms">{{ diary.subject }}</h4>
+            <div class="card-body">
+                <div class="d-flex justify-content-start">
+                    <div class="badge badge-light p-2">
+                        {{ diary.create_date|datetime }}
+                    </div>
+                </div>
+                <div class="card-text">{{ diary.content|markdown }}</div>
+            </div>
+        </div>
+        {% for musicrec in diary.musicrec_set %}
+        <div class="col-md-7">
+            <h4 class="subtitle wow fadeInUp animated" data-wow-delay=".3s" data-wow-duration="500ms">노래 정보</h4>
+            <div class="card">
+                <div class="row no-gutters">
+                    <div class="col-4">
+                        <img src="{{ url_for('static', filename = 'images/card-image.png')}}" alt="album cover image" class="img-responsive" width="150" height="150">
+                        <div class="overlay">
+                            <div class="buttons">
+                                <a rel="gallery" class="fancybox" href="images/card-image.png">Demo</a>
+                                <a target="_blank" href="#">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div class="card-body">
+                            <div class="card-text">노래 제목: {{ musicrec.musicname}}</div>
+                            <div class="card-text">가수: {{ musicrec.singer}}</div>
+                            <div class="card-text">장르: {{ musicrec.genre}}</div>
+                            <p>1<input type="range" name="grade" min="1" max="5">5</p> <!-- 이거 어디서 POST 해서 받아야되는데-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h4 class="subtitle wow fadeInUp animated" data-wow-delay=".3s" data-wow-duration="500ms">노래 가사</h4>
+            <div class="card-body">
+                <div class="card-text">가사 나오는 곳 {{ musicrec.lyrics}}</div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <form action="{{ url_for('musicrec.recommend', diary_id=diary.id) }}" method="post" class="my-3">
+        <input type="submit" value="노래추천결과" onclick="this.style.visibility='hidden'" class="btn btn-primary">
+    </form>
+
+</div>
+<br><br>
+<a href="{{ url_for('diary._list') }}">메인화면으로 돌아가기</a>
+{% endblock %}
+
+
