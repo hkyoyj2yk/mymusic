@@ -8,6 +8,16 @@ from ..models import Diary
 from ..forms import DiaryForm, MusicRecForm
 from pybo.views.auth_views import login_required
 
+import pandas as pd
+import numpy as np
+from numpy import dot
+from numpy.linalg import norm
+import warnings
+warnings.filterwarnings('ignore')
+
+
+
+
 bp = Blueprint('diary', __name__, url_prefix='/diary')
 
 
@@ -30,9 +40,7 @@ def create():
     form = DiaryForm()
     if request.method == 'POST' and form.validate_on_submit():
         diary = Diary(subject=form.subject.data, content=form.content.data, create_date=datetime.now(), user=g.user)
-        lyr1 = request.form['lyrpre']
-        emo1 = request.form['emopre']
         db.session.add(diary)
         db.session.commit()
-        return render_template('diary/diary_detail.html', diary=diary, form=form, emopre=emo1, lyrpre=lyr1) # 작성을 하면 목록 화면(main.index)으로 가는 상태니까 바로 디테일 화면(diary.detail)으로 가게끔
+        return render_template('diary/diary_detail.html', diary=diary, form=form) # 작성을 하면 목록 화면(main.index)으로 가는 상태니까 바로 디테일 화면(diary.detail)으로 가게끔
     return render_template('diary/diary_form.html', form=form)
